@@ -46,6 +46,18 @@
             return this;
         }
 
+        public AcsNamespace AddWsFederationIdentityProvider(Action<WsFederationIdentityProviderSpec> configAction)
+        {
+            Guard.NotNull(() => configAction, configAction);
+
+            var spec = new WsFederationIdentityProviderSpec();
+            configAction(spec);
+
+            this.commands.Add(new AddIdentityProviderCommand(spec));
+
+            return this;
+        }
+
         public AcsNamespace AddServiceIdentity(Action<ServiceIdentitySpec> configAction)
         {
             Guard.NotNull(() => configAction, configAction);

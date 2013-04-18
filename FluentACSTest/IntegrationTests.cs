@@ -25,6 +25,22 @@
         private readonly string facebookAppSecret = ConfigurationManager.AppSettings["facebookAppSecret"];
 
         [TestMethod]
+        public void AddWsFederationIdentityProvider()
+        {
+            var acsNamespace = new AcsNamespace(this.namespaceDesc);
+            acsNamespace
+                .AddWsFederationIdentityProvider(
+                    ip => ip
+                        .MetadataUri("https://login.windows.net/fluentacs.onmicrosoft.com/FederationMetadata/2007-06/FederationMetadata.xml")
+                        .DisplayName("My WS-Fed IP")
+                );
+
+            acsNamespace.SaveChanges(logInfo => Trace.WriteLine(logInfo.Message));
+
+            Assert.IsTrue(AcsHelper.CheckIdentityProviderExists(this.namespaceDesc, "My WS-Fed IP"));
+        }
+
+        [TestMethod]
         public void AddGoogleAndYahooIdentityProviders()
         {
             var acsNamespace = new AcsNamespace(this.namespaceDesc);

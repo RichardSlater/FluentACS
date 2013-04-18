@@ -60,6 +60,14 @@
                     facebookIdentityProviderSpec.ApplicationPermissions());
                 this.LogSavingChangesMessage(logAction);
             }
+
+            if (this.identityProviderSpec is WsFederationIdentityProviderSpec)
+            {
+                var wsFederationIdentityProviderSpec = (WsFederationIdentityProviderSpec)identityProviderSpec;
+                this.LogMessage(logAction, string.Format("Adding Identity Provider '{0}'", wsFederationIdentityProviderSpec.DisplayName()));
+                acsWrapper.AddIdentityProviderManually(wsFederationIdentityProviderSpec.DisplayName(), wsFederationIdentityProviderSpec.MetadataUri(), WebSSOProtocolType.WsFederation);
+                this.LogSavingChangesMessage(logAction);
+            }
         }
     }
 }
